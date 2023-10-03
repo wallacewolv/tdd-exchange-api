@@ -42,5 +42,14 @@ describe('ExchangeService', () => {
       await service.convertAmount(value);
       await expect(currenciesService.getCurrency).toHaveBeenCalledTimes(2);
     });
+
+    it('should be called getCurrency with correct params', async () => {
+      const value: Amount = { from: 'USD', to: 'BRL', amount: '1' };
+      await service.convertAmount(value);
+      await expect(currenciesService.getCurrency).toHaveBeenCalledWith('USD');
+      await expect(currenciesService.getCurrency).toHaveBeenLastCalledWith(
+        'BRL',
+      );
+    });
   });
 });

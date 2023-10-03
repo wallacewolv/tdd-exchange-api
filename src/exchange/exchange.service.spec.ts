@@ -15,4 +15,11 @@ describe('ExchangeService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('convertAmount()', () => {
+    it('should be throw if called with invalid params', async () => {
+      const value = { from: '', to: '', amount: '' };
+      await expect(service.convertAmount(value)).rejects.toThrow();
+    });
+  });
 });

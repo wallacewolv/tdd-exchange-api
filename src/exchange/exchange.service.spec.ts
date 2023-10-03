@@ -51,5 +51,13 @@ describe('ExchangeService', () => {
         'BRL',
       );
     });
+
+    it('should be throw when called getCurrency throw', async () => {
+      const value: Amount = { from: 'INVALID', to: 'BRL', amount: '1' };
+      (currenciesService.getCurrency as jest.Mock).mockRejectedValue(
+        new Error(),
+      );
+      await expect(service.convertAmount(value)).rejects.toThrow();
+    });
   });
 });

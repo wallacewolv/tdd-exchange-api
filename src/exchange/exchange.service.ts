@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 export interface Amount {
   from: string;
   to: string;
-  amount: string;
+  amount: number;
 }
 
 export class CurrenciesService {
@@ -24,6 +24,8 @@ export class ExchangeService {
     try {
       const currencyForm = await this.currenciesService.getCurrency(from);
       const currencyTo = await this.currenciesService.getCurrency(to);
+
+      return { amount: (currencyForm.value / currencyTo.value) * amount };
     } catch (error) {
       throw new Error(error);
     }

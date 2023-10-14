@@ -1,9 +1,8 @@
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { Currencies } from './currencies.entity';
-import { CurrenciesRepository } from './currencies.repository';
-import { CurrenciesInputType } from './types/currencies-input.type';
+import { Currencies } from '../entity/currencies.entity';
+import { CurrenciesRepository } from '../repository/currencies.repository';
 
 describe('CurrenciesRepository', () => {
   let repository: CurrenciesRepository;

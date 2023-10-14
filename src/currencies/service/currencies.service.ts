@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { Currencies } from './currencies.entity';
-import { CurrenciesRepository } from './currencies.repository';
-import { CurrenciesInputType } from './types/currencies-input.type';
+import { Currencies } from '../entity/currencies.entity';
+import { CurrenciesRepository } from '../repository/currencies.repository';
+import { CurrenciesInputType } from '../types/currencies-input.type';
 
 @Injectable()
 export class CurrenciesService {

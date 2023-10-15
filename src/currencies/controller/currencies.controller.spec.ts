@@ -8,14 +8,17 @@ import { CurrenciesController } from './currencies.controller';
 describe('CurrenciesController', () => {
   let controller: CurrenciesController;
   let service: CurrenciesService;
+  let mockData;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CurrenciesController],
       providers: [
         {
-          provide: CurrenciesService, useFactory: () => ({
-            getCurrency: jest.fn()
+          provide: CurrenciesService,
+          useFactory: () => ({
+            getCurrency: jest.fn(),
+            createCurrency: jest.fn(),
           })
         }
       ]
@@ -23,6 +26,7 @@ describe('CurrenciesController', () => {
 
     controller = module.get<CurrenciesController>(CurrenciesController);
     service = module.get<CurrenciesService>(CurrenciesService);
+    mockData = { currency: 'USD', value: 1 } as Currencies;
   });
 
   it('should be defined', () => {
@@ -41,9 +45,25 @@ describe('CurrenciesController', () => {
     });
 
     it('should be return if service return', async () => {
-      const mockData = { currency: 'USD', value: 1 } as Currencies;
       (service.getCurrency as jest.Mock).mockResolvedValue(mockData);
       expect(await controller.getCurrency('USD')).toEqual(mockData);
+    });
+  });
+
+  describe('createCurrency()', () => {
+    it('should be throw when service throw', async () => {
+      (service.createCurrency as jest.Mock).mockRejectedValue(new BadRequestException());
+      await expect(controller.createCurrency(mockData)).rejects.toThrow(new BadRequestException());
+    });
+
+    it('should be called when service with params', async () => {
+      await controller.createCurrency(mockData);
+      expect(service.createCurrency).toBeCalledWith(mockData);
+    });
+    
+    it('should be return if service return', async () => {
+      (service.createCurrency as jest.Mock).mockResolvedValue(mockData);
+      expect(await controller.createCurrency(mockData)).toEqual(mockData);
     });
   });
 });
